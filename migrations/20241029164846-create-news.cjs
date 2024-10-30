@@ -18,6 +18,9 @@ module.exports = {
       description: {
         type: Sequelize.TEXT
       },
+      categoryId: {
+        type: Sequelize.INTEGER
+      },
       createdAt: {
         allowNull: false,
         type: Sequelize.DATE

@@ -1,11 +1,12 @@
+import slugify from "slugify";
 import News from "../models/News.js";
-import slugify from 'slugify';
-
+import NewsCategory from "../models/NewsCategory.js";
 import { errorResponse, successResponse } from "../utils/responseUtils.js";
+import { Op } from "sequelize";
 
 export const getAllNews = async (req, res) => {
   try {
-    const news = await News.findAll();
+    const news = await News.findAll({ include: NewsCategory });
     return successResponse(res, "Get All News", news);
   } catch (err) {
     return errorResponse(res, "Error while fetching news", err);
@@ -15,7 +16,7 @@ export const getAllNews = async (req, res) => {
 export const getNewsById = async (req, res) => {
   const { id } = req.params;
   try {
-    const news = await News.findByPk(id);
+    const news = await News.findByPk(id, { include: NewsCategory });
     if (!news) {
       return errorResponse(res, "News not found", null);
     }
@@ -39,14 +40,16 @@ export const getNewsBySlug = async (req, res) => {
 };
 
 export const createNews = async (req, res) => {
-  const { title, description } = req.body;
-  
+  const { title, description, categoryId } = req.body;
+
   try {
     const news = await News.create({
       title,
       slug: slugify(title, { lower: true }),
       description,
+      categoryId,
     });
+
     return successResponse(res, "News created successfully", news);
   } catch (err) {
     return errorResponse(res, "Error while creating news", err);
@@ -55,7 +58,7 @@ export const createNews = async (req, res) => {
 
 export const updateNewsById = async (req, res) => {
   const { id } = req.params;
-  const { title, description } = req.body;
+  const { title, description, categoryId } = req.body;
   try {
     const news = await News.findByPk(id);
     if (!news) {
@@ -65,6 +68,7 @@ export const updateNewsById = async (req, res) => {
       title,
       slug: slugify(title, { lower: true }),
       description,
+      categoryId,
     });
     return successResponse(res, "News updated successfully", news);
   } catch (err) {
@@ -74,7 +78,7 @@ export const updateNewsById = async (req, res) => {
 
 export const updateNewsBySlug = async (req, res) => {
   const { slug } = req.params;
-  const { title, description } = req.body;
+  const { title, description, categoryId } = req.body;
   try {
     const news = await News.findOne({ where: { slug } });
     if (!news) {
@@ -83,6 +87,7 @@ export const updateNewsBySlug = async (req, res) => {
     await news.update({
       title,
       description,
+      categoryId,
     });
     return successResponse(res, "News updated successfully", news);
   } catch (err) {
@@ -115,5 +120,22 @@ export const deleteNewsBySlug = async (req, res) => {
     return successResponse(res, "News deleted successfully", null);
   } catch (err) {
     return errorResponse(res, "Error while deleting news", err);
+  }
+};
+
+export const searchNews = async (req, res) => {
+  const { search } = req.params;
+  
+  try {
+    const news = await News.findAll({
+      where: {
+        title: {
+          [Op.like]: `%${search}%`,
+        },
+      },
+    });
+    return successResponse(res, `Search results of: ${search}`, news);
+  } catch (err) {
+    return errorResponse(res, "Error while searching news", err);
   }
 };

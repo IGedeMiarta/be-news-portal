@@ -15,7 +15,9 @@ COPY . .
 
 # Expose the port your app runs on
 EXPOSE 5000
-EXPOSE 3306
 
 # Set the command to start the application
 CMD ["npm", "run", "dev"]
+
+# Run the migrations
+# RUN npx sequelize-cli db:migrate

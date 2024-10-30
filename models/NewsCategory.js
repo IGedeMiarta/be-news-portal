@@ -1,5 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../config/database.js';  // Adjust path as needed
+import sequelize from '../config/database.js'; 
 
 class NewsCategory extends Model {}
 
@@ -12,10 +12,10 @@ NewsCategory.init(
     },
   },
   {
-    sequelize,       // Pass the connection instance
-    modelName: 'NewsCategory', // Name the model
-    tableName: 'news_categories', // Optional: Specify table name
-    timestamps: true,  // Add createdAt and updatedAt timestamps
+    sequelize,       
+    modelName: 'NewsCategory', 
+    tableName: 'NewsCategories', 
+    timestamps: true,  
   }
 );
 

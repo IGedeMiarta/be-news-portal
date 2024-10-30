@@ -1,5 +1,6 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../config/database.js';  // Adjust path as needed
+import sequelize from '../config/database.js'; 
+import NewsCategory from './NewsCategory.js';
 
 class News extends Model {}
 
@@ -14,17 +15,23 @@ News.init(
       allowNull: false,
       unique: true,
     },
+    categoryId: {
+      type: DataTypes.INTEGER,
+      allowNull: false,
+    },
     description: {
       type: DataTypes.TEXT,
       allowNull: false,
     },
   },
   {
-    sequelize,       // Pass the connection instance
-    modelName: 'News', // Name the model
-    tableName: 'news', // Optional: Specify table name
-    timestamps: true,  // Add createdAt and updatedAt timestamps
+    sequelize,      
+    modelName: 'News', 
+    tableName: 'News', 
+    timestamps: true,  
   }
 );
+News.belongsTo(NewsCategory, { foreignKey: 'categoryId' });
+NewsCategory.hasMany(News, { foreignKey: 'categoryId' });
 
 export default News;

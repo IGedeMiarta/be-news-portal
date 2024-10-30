@@ -1,4 +1,3 @@
-// responseUtils.js
 
 export const successResponse = (res, message, data = null) => {
   return res.status(200).json({
@@ -32,6 +31,13 @@ export const forbiddenResponse = (res, message = "Forbidden") => {
 
 export const notFoundResponse = (res, message = "Not Found") => {
   return res.status(404).json({
+    status: "error",
+    message,
+  });
+}
+
+export const methodNotAllowedResponse = (res, message = "Method Not Allowed") => {
+  return res.status(405).json({
     status: "error",
     message,
   });

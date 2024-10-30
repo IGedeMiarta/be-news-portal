@@ -1,9 +1,19 @@
 import { check, validationResult } from "express-validator";
 import { errorResponse } from "../utils/responseUtils.js";
+import User from "../models/User.js";
+import NewsCategory from "../models/NewsCategory.js";
 
 
 export const registerValidator = [
   check("email")
+    // unique email validation can be done here
+    .custom(async (value) => {
+      const user = await User.findOne({ where: { email: value } });
+      if (user) {
+        throw new Error("Email already exists");
+      }
+      return true;
+    })
     .notEmpty()
     .withMessage("Email is required")
     .isEmail()
@@ -75,6 +85,18 @@ export const categoryValidator = [
 export const newsValidator = [
   check("title").notEmpty().withMessage("Title is required"),
   check("description").notEmpty().withMessage("Description is required"),
+  check("categoryId")
+    .notEmpty()
+    .withMessage("Category ID is required")
+    .custom(async (value) => {
+      const category = await NewsCategory.findByPk(value);
+      if (!category) {
+        console.log(category);
+        
+        throw new Error("Category ID does not exist");
+      }
+      return true;
+    }),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {

@@ -1,5 +1,5 @@
 import { Model, DataTypes } from 'sequelize';
-import sequelize from '../config/database.js';  // Adjust path as needed
+import sequelize from '../config/database.js';
 
 class User extends Model {}
 
@@ -23,10 +23,10 @@ User.init(
     },
   },
   {
-    sequelize,       // Pass the connection instance
-    modelName: 'User', // Name the model
-    tableName: 'users', // Optional: Specify table name
-    timestamps: true,  // Add createdAt and updatedAt timestamps
+    sequelize,       
+    modelName: 'User', 
+    tableName: 'Users', 
+    timestamps: true, 
   }
 );
 
