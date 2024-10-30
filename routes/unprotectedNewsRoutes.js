@@ -222,7 +222,7 @@ router.get('/find/:slug', getNewsBySlug);
  *   get:
  *     summary: Search news items
  *     tags:
- *       - news
+ *       - News
  *     description: Search for news items by a keyword
  *     parameters:
  *       - in: path
