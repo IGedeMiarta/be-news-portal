@@ -21,6 +21,11 @@ User.init(
       type: DataTypes.STRING,
       defaultValue: 'user',
     },
+    refreshToken: {
+      type: DataTypes.STRING,
+      allowNull: true,
+      unique: true,
+    },
   },
   {
     sequelize,       

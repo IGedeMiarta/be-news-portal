@@ -1,6 +1,7 @@
 import { Router } from "express";
 import {
   login,
+  logout,
   refreshToken,
   register,
 } from "../controllers/authController.js";
@@ -201,6 +202,98 @@ router.post("/login", loginValidator, login);
  */
 
 router.post("/refresh-token", refreshTokenValidator, refreshToken);
+
+/**
+ * @swagger
+ * /auth/register:
+ *   post:
+ *     summary: Register a new user
+ *     tags: 
+ *       - Auth
+ *     requestBody:
+ *       required: true
+ *       content:
+ *         application/json:
+ *           schema:
+ *             type: object
+ *             required:
+ *               - email
+ *               - password
+ *               - password_confirmation
+ *               - role
+ *             properties:
+ *               email:
+ *                 type: string
+ *                 example: "admin@example.com"
+ *               password:
+ *                 type: string
+ *                 example: "password"
+ *               password_confirmation:
+ *                 type: string
+ *                 example: "password"
+ *               role:
+ *                 type: string
+ *                 example: "admin"
+ *     responses:
+ *       200:
+ *         description: User registered successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 message:
+ *                   type: string
+ *                   example: "User registered successfully"
+ *                 data:
+ *                   type: object
+ *                   example: null
+ *       400:
+ *         description: Validation error
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "error"
+ *                 message:
+ *                   type: string
+ *                   example: "Validation error"
+ *                 errors:
+ *                   type: object
+ *                   example: { "email": "Email is required" }
+ */
+
+router.post("/register", registerValidator, register);
+
+/**
+ * @swagger
+ * /auth/logout:
+ *   post:
+ *     summary: logout user
+ *     tags: 
+ *       - Auth
+ *     responses:
+ *       200:
+ *         description: Logout successfully
+ *         content:
+ *           application/json:
+ *             schema:
+ *               type: object
+ *               properties:
+ *                 status:
+ *                   type: string
+ *                   example: "success"
+ *                 message:
+ *                   type: string
+ *                   example: "Logout Success"
+ */
+router.post("/logout",logout);
 
 
 export default router;

@@ -61,7 +61,7 @@ export const loginValidator = [
 ];
 
 export const refreshTokenValidator = [
-  check("refresh_token").notEmpty().withMessage("Refresh token is required"),
+  check("refreshToken").notEmpty().withMessage("Refresh token is required"),
   (req, res, next) => {
     const errors = validationResult(req);
     if (!errors.isEmpty()) {
