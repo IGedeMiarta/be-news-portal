@@ -13,6 +13,9 @@ RUN npm install
 # Copy the rest of the application files
 COPY . .
 
+#Copy .env file
+RUN cp .env.example .env
+
 # Expose the port your app runs on
 EXPOSE 5000
 
